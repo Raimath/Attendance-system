@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://attendance-system-server-5okt.onrender.com',
+        target: 'https://attendance-system-b9lx.onrender.com',
         changeOrigin: true,
       },
     }
