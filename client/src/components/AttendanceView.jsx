@@ -32,15 +32,15 @@ const AttendanceView = () => {
     }, [date, department, year]);
 
     return (
-        <div className="glass-panel animate-fade-in" style={{ padding: '2rem' }}>
-            <div className="grid-responsive grid-3" style={{ marginBottom: '2rem' }}>
+        <div className="glass-panel animate-fade-in panel-padding">
+            <div className="grid-responsive grid-3 mb-8">
                 <div>
                     <label>Date</label>
-                    <input type="date" value={date} max={new Date().toISOString().split('T')[0]} onChange={e => setDate(e.target.value)} style={{ margin: 0 }} />
+                    <input type="date" value={date} max={new Date().toISOString().split('T')[0]} onChange={e => setDate(e.target.value)} className="m-0" />
                 </div>
                 <div>
                     <label>Department</label>
-                    <select value={department} onChange={e => setDepartment(e.target.value)} style={{ margin: 0 }}>
+                    <select value={department} onChange={e => setDepartment(e.target.value)} className="m-0">
                         <option value="BCA">BCA</option>
                         <option value="Bcom">Bcom</option>
                         <option value="Bsc">Bsc</option>
@@ -49,7 +49,7 @@ const AttendanceView = () => {
                 </div>
                 <div>
                     <label>Year</label>
-                    <select value={year} onChange={e => setYear(e.target.value)} style={{ margin: 0 }}>
+                    <select value={year} onChange={e => setYear(e.target.value)} className="m-0">
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
@@ -86,7 +86,7 @@ const AttendanceView = () => {
                             </table>
                         </div>
                     ) : (
-                        <div style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)' }}>
+                        <div className="empty-state">
                             No attendance records found for this date.
                         </div>
                     )}

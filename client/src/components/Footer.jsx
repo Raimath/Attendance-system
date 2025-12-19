@@ -10,22 +10,10 @@ const Footer = () => {
         <footer className="glass-footer">
             <div className="footer-content">
                 <div className="footer-logo">
-                    <div style={{
-                        background: 'linear-gradient(135deg, var(--accent-color), var(--accent-hover))',
-                        width: '32px',
-                        height: '32px',
-                        borderRadius: '8px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: 'white',
-                        fontWeight: 'bold',
-                        fontSize: '1rem',
-                        boxShadow: '0 4px 12px rgba(99, 102, 241, 0.3)'
-                    }}>
+                    <div className="footer-logo-icon">
                         A
                     </div>
-                    <span style={{ fontSize: '1.2rem', fontWeight: '700', color: 'var(--text-main)' }}>
+                    <span className="footer-logo-text">
                         Attendance System
                     </span>
                 </div>
@@ -42,9 +30,9 @@ const Footer = () => {
                 <div>
                     &copy; {new Date().getFullYear()} Rehemat Ali. All rights reserved.
                 </div>
-                <div style={{ display: 'flex', gap: '1rem' }}>
+                <div className="flex gap-4">
                     <span>v1.2.4</span>
-                    <span style={{ color: 'var(--accent-color)', fontWeight: '500' }}>Faculty Portal</span>
+                    <span className="message-success font-500">Faculty Portal</span>
                 </div>
             </div>
         </footer>

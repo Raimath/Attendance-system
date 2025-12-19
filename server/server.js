@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(cors());
 
 // Database Connection
-mongoose.connect(process.env.MONGO_URI || 'mongodb+srv://santu:santu123@cluster0.pqhwnvi.mongodb.net/?appName=Cluster0')
+mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log('MongoDB Connected'))
     .catch(err => console.log(err));
 

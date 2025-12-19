@@ -108,15 +108,15 @@ const AttendanceForm = () => {
     };
 
     return (
-        <div className="glass-panel animate-fade-in" style={{ padding: '2rem' }}>
-            <div className="grid-responsive grid-3" style={{ marginBottom: '2rem' }}>
+        <div className="glass-panel animate-fade-in panel-padding">
+            <div className="grid-responsive grid-3 mb-8">
                 <div>
                     <label>Date</label>
-                    <input type="date" value={date} max={new Date().toISOString().split('T')[0]} onChange={e => setDate(e.target.value)} style={{ margin: 0 }} />
+                    <input type="date" value={date} max={new Date().toISOString().split('T')[0]} onChange={e => setDate(e.target.value)} className="m-0" />
                 </div>
                 <div>
                     <label>Department</label>
-                    <select value={department} onChange={e => setDepartment(e.target.value)} style={{ margin: 0 }}>
+                    <select value={department} onChange={e => setDepartment(e.target.value)} className="m-0">
                         <option value="BCA">BCA</option>
                         <option value="Bcom">Bcom</option>
                         <option value="Bsc">Bsc</option>
@@ -125,7 +125,7 @@ const AttendanceForm = () => {
                 </div>
                 <div>
                     <label>Year</label>
-                    <select value={year} onChange={e => setYear(e.target.value)} style={{ margin: 0 }}>
+                    <select value={year} onChange={e => setYear(e.target.value)} className="m-0">
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
@@ -143,7 +143,7 @@ const AttendanceForm = () => {
                                     <tr>
                                         <th>Roll No</th>
                                         <th>Name</th>
-                                        <th style={{ textAlign: 'center' }}>Status</th>
+                                        <th className="text-center">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -151,20 +151,10 @@ const AttendanceForm = () => {
                                         <tr key={student._id}>
                                             <td>{student.rollNo}</td>
                                             <td>{student.name}</td>
-                                            <td style={{ textAlign: 'center' }}>
+                                            <td className="text-center">
                                                 <button
                                                     onClick={() => toggleStatus(student._id)}
-                                                    style={{
-                                                        background: attendance[student._id] === 'Present' ? 'var(--success-bg)' : 'var(--danger-bg)',
-                                                        color: attendance[student._id] === 'Present' ? 'var(--success)' : 'var(--danger)',
-                                                        border: '1px solid currentColor',
-                                                        padding: '0.25rem 1rem',
-                                                        borderRadius: '20px',
-                                                        cursor: 'pointer',
-                                                        fontWeight: 'bold',
-                                                        minWidth: '100px',
-                                                        transition: 'all 0.2s'
-                                                    }}
+                                                    className={`status-btn ${attendance[student._id] === 'Present' ? 'status-btn-present' : 'status-btn-absent'}`}
                                                 >
                                                     {attendance[student._id]}
                                                 </button>
@@ -175,14 +165,18 @@ const AttendanceForm = () => {
                             </table>
                         </div>
                     ) : (
-                        <p style={{ textAlign: 'center', color: 'var(--text-muted)' }}>No students found for this class.</p>
+                        <p className="empty-state">No students found for this class.</p>
                     )}
                 </>
             )}
 
-            <div style={{ marginTop: '2rem', textAlign: 'right' }}>
-                {message && <span style={{ marginRight: '1rem', color: message.includes('Failed') ? 'var(--danger)' : 'var(--success)' }}>{message}</span>}
-                <button className="btn-primary" onClick={handleSubmit} disabled={loading || students.length === 0} style={{ width: 'auto' }}>
+            <div className="message-container">
+                {message && (
+                    <span className={`message-text ${message.includes('Failed') ? 'message-danger' : 'message-success'}`}>
+                        {message}
+                    </span>
+                )}
+                <button className="btn-primary w-auto" onClick={handleSubmit} disabled={loading || students.length === 0}>
                     Finalize Attendance
                 </button>
             </div>

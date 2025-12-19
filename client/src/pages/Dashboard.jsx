@@ -44,7 +44,7 @@ const Dashboard = () => {
                 </button>
             </div>
 
-            <div className="tab-content" style={{ minHeight: '400px' }}>
+            <div className="tab-content">
                 {activeTab === 'take' && <AttendanceForm />}
                 {activeTab === 'view' && <AttendanceView />}
                 {activeTab === 'students' && <ManageStudents />}

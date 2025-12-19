@@ -10,20 +10,6 @@ const ThemeToggle = () => {
             className="theme-toggle"
             aria-label="Toggle Dark Mode"
             title="Toggle Dark Mode"
-            style={{
-                background: 'var(--glass-bg)',
-                border: '1px solid var(--glass-border)',
-                borderRadius: '50%',
-                width: '40px',
-                height: '40px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease',
-                color: 'var(--text-main)',
-                boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
-            }}
         >
             {theme === 'dark' ? (
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

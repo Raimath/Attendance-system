@@ -36,52 +36,29 @@ const Navbar = () => {
     return (
         <>
             <nav className="glass-navbar">
-                <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', cursor: 'pointer' }} onClick={() => navigate('/dashboard')}>
-                        <div style={{
-                            background: 'linear-gradient(135deg, var(--accent-color), var(--accent-hover))',
-                            width: '40px',
-                            height: '40px',
-                            borderRadius: '10px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            color: 'white',
-                            fontWeight: 'bold',
-                            fontSize: '1.2rem',
-                            boxShadow: '0 4px 12px rgba(99, 102, 241, 0.3)'
-                        }}>
+                <div className="nav-container">
+                    <div className="nav-brand" onClick={() => navigate('/dashboard')}>
+                        <div className="nav-logo-icon">
                             A
                         </div>
                         <div>
-                            <h1 style={{ fontSize: '1.25rem', fontWeight: 'bold', margin: 0 }}>Attendance System</h1>
-                            <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', margin: 0 }}>Faculty Portal</p>
+                            <h1 className="nav-title">Attendance System</h1>
+                            <p className="nav-subtitle">Faculty Portal</p>
                         </div>
                     </div>
 
                     {/* Desktop Controls */}
-                    <div className="nav-controls-desktop" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-                        <div className="navbar-user-info" style={{ textAlign: 'right' }}>
-                            <p style={{ margin: 0, fontWeight: '500', fontSize: '0.95rem' }}>{user?.username}</p>
-                            <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '0.75rem' }}>Administrator</p>
+                    <div className="nav-controls-desktop nav-controls">
+                        <div className="navbar-user-info nav-user-meta">
+                            <p className="nav-username">{user?.username}</p>
+                            <p className="nav-user-role">Administrator</p>
                         </div>
 
-                        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                        <div className="nav-actions">
                             <ThemeToggle />
                             <button
                                 onClick={logout}
-                                style={{
-                                    background: 'rgba(239, 68, 68, 0.1)',
-                                    color: 'var(--danger)',
-                                    border: '1px solid currentColor',
-                                    padding: '0.5rem 1.25rem',
-                                    borderRadius: '8px',
-                                    cursor: 'pointer',
-                                    fontWeight: '500',
-                                    transition: 'all 0.3s ease'
-                                }}
-                                onMouseOver={(e) => e.currentTarget.style.background = 'rgba(239, 68, 68, 0.2)'}
-                                onMouseOut={(e) => e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)'}
+                                className="btn-logout"
                             >
                                 Logout
                             </button>
@@ -110,16 +87,7 @@ const Navbar = () => {
             <div className={`mobile-drawer ${isMenuOpen ? 'open' : ''}`}>
                 <button
                     onClick={toggleMenu}
-                    style={{
-                        position: 'absolute',
-                        top: '1rem',
-                        right: '1rem',
-                        background: 'none',
-                        border: 'none',
-                        color: 'var(--text-main)',
-                        cursor: 'pointer',
-                        padding: '0.5rem'
-                    }}
+                    className="drawer-close-btn"
                     aria-label="Close Menu"
                 >
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -127,46 +95,24 @@ const Navbar = () => {
                     </svg>
                 </button>
 
-                <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
-                    <div style={{
-                        background: 'linear-gradient(135deg, var(--accent-color), var(--accent-hover))',
-                        width: '60px',
-                        height: '60px',
-                        borderRadius: '15px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: 'white',
-                        fontWeight: 'bold',
-                        fontSize: '1.8rem',
-                        margin: '0 auto 1rem',
-                        boxShadow: '0 8px 20px rgba(99, 102, 241, 0.4)'
-                    }}>
+                <div className="drawer-header">
+                    <div className="drawer-logo-icon">
                         A
                     </div>
-                    <h2 style={{ fontSize: '1.4rem', fontWeight: 'bold', margin: '0 0 0.25rem' }}>{user?.username}</h2>
-                    <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Administrator</p>
+                    <h2 className="drawer-user-name">{user?.username}</h2>
+                    <p className="drawer-user-role">Administrator</p>
                 </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                    <p style={{ color: 'var(--text-muted)', fontSize: '0.75rem', fontWeight: '600', textTransform: 'uppercase', marginBottom: '0.5rem', paddingLeft: '0.5rem' }}>Menu</p>
+                <div className="drawer-menu">
+                    <p className="drawer-menu-label">Menu</p>
 
                     {navItems.map(item => (
                         <button
                             key={item.id}
                             onClick={() => handleTabClick(item.id)}
-                            className="drawer-item"
-                            style={{
-                                width: '100%',
-                                textAlign: 'left',
-                                cursor: 'pointer',
-                                background: activeTab === item.id ? 'rgba(99, 102, 241, 0.15)' : 'var(--glass-bg)',
-                                color: activeTab === item.id ? 'var(--accent-color)' : 'var(--text-main)',
-                                borderColor: activeTab === item.id ? 'var(--accent-color)' : 'var(--glass-border)',
-                                borderLeftWidth: activeTab === item.id ? '4px' : '1px'
-                            }}
+                            className={`drawer-item ${activeTab === item.id ? 'drawer-item-active' : ''}`}
                         >
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: activeTab === item.id ? 1 : 0.6 }}>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`svg-opacity-transition ${activeTab === item.id ? 'svg-active' : 'svg-inactive'}`}>
                                 <path d={item.icon === 'M9 11l3 3L22 4' ? "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" : (
                                     item.id === 'take' ? "M12 2v20m10-10H2" : "M4 19.5A2.5 2.5 0 0 1 6.5 17H20"
                                 )} />
@@ -178,17 +124,16 @@ const Navbar = () => {
                         </button>
                     ))}
 
-                    <hr style={{ border: 'none', borderTop: '1px solid var(--glass-border)', margin: '1rem 0' }} />
+                    <hr className="drawer-divider" />
 
-                    <div className="drawer-item" style={{ justifyContent: 'space-between' }}>
+                    <div className="drawer-item justify-between">
                         <span>Theme Mode</span>
                         <ThemeToggle />
                     </div>
 
                     <button
                         onClick={() => { logout(); setIsMenuOpen(false); }}
-                        className="drawer-item"
-                        style={{ width: '100%', cursor: 'pointer', background: 'rgba(239, 68, 68, 0.1)', color: 'var(--danger)', borderColor: 'rgba(239, 68, 68, 0.2)', marginTop: '1rem' }}
+                        className="drawer-item drawer-logout"
                     >
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />

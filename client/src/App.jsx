@@ -40,9 +40,9 @@ function App() {
     <ThemeProvider>
       <AuthProvider>
         <Router>
-          <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+          <div className="app-container">
             <Navbar />
-            <div style={{ flex: 1 }}>
+            <div className="main-content">
               <AppRoutes />
             </div>
             <Footer />

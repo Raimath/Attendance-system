@@ -31,29 +31,20 @@ const Login = () => {
 
     return (
         <div className="auth-container">
-            <div className="glass-panel animate-fade-in" style={{ padding: '3rem', width: '100%', maxWidth: '400px' }}>
-                <h2 style={{ textAlign: 'center', marginBottom: '2rem', fontSize: '2rem', fontWeight: 'bold' }}>
+            <div className="glass-panel animate-fade-in auth-panel">
+                <h2 className="auth-title">
                     {isRegistering ? 'Faculty Register' : 'Faculty Login'}
                 </h2>
 
                 {error && (
-                    <div className="animate-fade-in" style={{
-                        background: 'rgba(239, 68, 68, 0.1)',
-                        color: 'var(--danger)',
-                        padding: '0.75rem',
-                        borderRadius: '8px',
-                        border: '1px solid rgba(239, 68, 68, 0.2)',
-                        marginBottom: '1.5rem',
-                        fontSize: '0.9rem',
-                        textAlign: 'center'
-                    }}>
+                    <div className="animate-fade-in error-message">
                         {error}
                     </div>
                 )}
 
                 <form onSubmit={handleSubmit}>
                     <div>
-                        <label style={{ display: 'block', marginBottom: '0.5rem', marginLeft: '0.2rem' }}>Username</label>
+                        <label className="form-label">Username</label>
                         <input
                             type="text"
                             value={username}
@@ -63,7 +54,7 @@ const Login = () => {
                     </div>
 
                     <div>
-                        <label style={{ display: 'block', marginBottom: '0.5rem', marginLeft: '0.2rem' }}>Password</label>
+                        <label className="form-label">Password</label>
                         <input
                             type="password"
                             value={password}
@@ -72,21 +63,21 @@ const Login = () => {
                         />
                     </div>
 
-                    <button type="submit" className="btn-primary" style={{ marginTop: '1rem' }}>
+                    <button type="submit" className="btn-primary mt-4">
                         {isRegistering ? 'Sign Up' : 'Sign In'}
                     </button>
                 </form>
 
-                <div style={{ marginTop: '1.5rem', textAlign: 'center' }}>
+                <div className="form-footer">
                     <button
                         onClick={() => setIsRegistering(!isRegistering)}
-                        style={{ background: 'none', border: 'none', color: 'var(--accent-color)', cursor: 'pointer', textDecoration: 'underline' }}
+                        className="link-btn"
                     >
                         {isRegistering ? 'Already have an account? Login' : 'Need an account? Register'}
                     </button>
                 </div>
             </div>
-            <div style={{ position: 'fixed', top: '1rem', right: '1rem' }}>
+            <div className="theme-toggle-fixed">
                 <ThemeToggle />
             </div>
         </div>

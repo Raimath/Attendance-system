@@ -72,9 +72,9 @@ const ExportAttendance = () => {
     };
 
     return (
-        <div className="glass-panel animate-fade-in" style={{ padding: '2rem' }}>
-            <h3 style={{ marginBottom: '1.5rem' }}>Export Monthly Attendance</h3>
-            <div className="grid-responsive grid-4" style={{ alignItems: 'end' }}>
+        <div className="glass-panel animate-fade-in panel-padding">
+            <h3 className="mb-4">Export Monthly Attendance</h3>
+            <div className="grid-responsive grid-4 items-end">
                 <div>
                     <label>Month</label>
                     <input
@@ -82,12 +82,12 @@ const ExportAttendance = () => {
                         value={month}
                         max={new Date().toISOString().slice(0, 7)}
                         onChange={e => setMonth(e.target.value)}
-                        style={{ margin: 0 }}
+                        className="m-0"
                     />
                 </div>
                 <div>
                     <label>Department</label>
-                    <select value={department} onChange={e => setDepartment(e.target.value)} style={{ margin: 0 }}>
+                    <select value={department} onChange={e => setDepartment(e.target.value)} className="m-0">
                         <option value="BCA">BCA</option>
                         <option value="Bcom">Bcom</option>
                         <option value="Bsc">Bsc</option>
@@ -96,19 +96,19 @@ const ExportAttendance = () => {
                 </div>
                 <div>
                     <label>Year</label>
-                    <select value={year} onChange={e => setYear(e.target.value)} style={{ margin: 0 }}>
+                    <select value={year} onChange={e => setYear(e.target.value)} className="m-0">
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
                         <option value="4">4</option>
                     </select>
                 </div>
-                <button className="btn-primary" onClick={handleExport} disabled={loading} style={{ height: '42px', minWidth: '150px' }}>
+                <button className="btn-primary h-42 w-auto min-w-150" onClick={handleExport} disabled={loading}>
                     {loading ? 'Exporting...' : 'Download Excel'}
                 </button>
             </div>
 
-            <div style={{ marginTop: '2rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>
+            <div className="mt-8 message-text text-muted">
                 <p>Note: The exported Excel file will contain P (Present) and A (Absent) markers for each day of the selected month.</p>
             </div>
         </div>
