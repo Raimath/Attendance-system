@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import LoadingSpinner from './LoadingSpinner';
 
 const AttendanceView = () => {
     const [department, setDepartment] = useState('BCA');
@@ -58,7 +59,7 @@ const AttendanceView = () => {
                 </div>
             </div>
 
-            {loading ? <p>Loading...</p> : (
+            {loading ? <LoadingSpinner message="Searching records..." /> : (
                 <>
                     {found ? (
                         <div className="table-container">

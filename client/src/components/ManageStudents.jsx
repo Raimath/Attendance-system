@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import LoadingSpinner from './LoadingSpinner';
 
 const ManageStudents = () => {
     const [students, setStudents] = useState([]);
@@ -114,7 +115,8 @@ const ManageStudents = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {students.map(s => (
+                        {loading && <tr><td colSpan="5"><LoadingSpinner message="Updating students..." /></td></tr>}
+                        {!loading && students.map(s => (
                             <tr key={s._id}>
                                 <td>{s.rollNo}</td>
                                 <td>{s.name}</td>
@@ -136,7 +138,7 @@ const ManageStudents = () => {
                                 </td>
                             </tr>
                         ))}
-                        {students.length === 0 && <tr><td colSpan="5" className="text-center">No students found</td></tr>}
+                        {!loading && students.length === 0 && <tr><td colSpan="5" className="text-center">No students found</td></tr>}
                     </tbody>
                 </table>
             </div>

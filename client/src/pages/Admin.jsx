@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import LoadingSpinner from '../components/LoadingSpinner';
+
 const Admin = () => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -17,6 +19,7 @@ const Admin = () => {
     const auser = au;
 
     const fetchUsers = async () => {
+        setLoading(true);
         try {
             const { data } = await axios.get('/api/auth/users');
             setUsers(data);
@@ -213,7 +216,7 @@ const Admin = () => {
                     </table>
                 </div>
 
-                {loading && <p className="empty-state">Fetching users...</p>}
+                {loading && <LoadingSpinner message="Fetching users..." />}
                 {!loading && users.length === 0 && <p className="empty-state">No faculty accounts found.</p>}
             </div>
         </div>

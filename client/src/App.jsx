@@ -4,11 +4,14 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Admin from './pages/Admin';
 import { useContext } from 'react';
+import LoadingSpinner from './components/LoadingSpinner';
 
 const PrivateRoute = ({ children }) => {
   const { user, loading } = useContext(AuthContext);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) {
+    return <LoadingSpinner fullPage message="Verifying Authentication..." />;
+  }
 
   return user ? children : <Navigate to="/login" />;
 };
