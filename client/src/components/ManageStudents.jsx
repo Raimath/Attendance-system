@@ -103,44 +103,80 @@ const ManageStudents = () => {
             </form>
 
             <h3 className="mt-8 mb-4">Student List</h3>
-            <div className="table-container max-h-400">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Roll No</th>
-                            <th>Name</th>
-                            <th>Department</th>
-                            <th>Year</th>
-                            <th className="text-right">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {loading && <tr><td colSpan="5"><LoadingSpinner message="Updating students..." /></td></tr>}
-                        {!loading && students.map(s => (
-                            <tr key={s._id}>
-                                <td>{s.rollNo}</td>
-                                <td>{s.name}</td>
-                                <td>{s.department}</td>
-                                <td>{s.year}</td>
-                                <td className="text-right">
+            <div className="attendance-list-wrapper">
+                {/* Desktop Table */}
+                <div className="table-container hide-on-mobile max-h-400">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Roll No</th>
+                                <th>Name</th>
+                                <th>Department</th>
+                                <th>Year</th>
+                                <th className="text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {loading && <tr><td colSpan="5"><LoadingSpinner message="Updating students..." /></td></tr>}
+                            {!loading && students.map(s => (
+                                <tr key={s._id}>
+                                    <td>{s.rollNo}</td>
+                                    <td>{s.name}</td>
+                                    <td>{s.department}</td>
+                                    <td>{s.year}</td>
+                                    <td className="text-right">
+                                        <button
+                                            onClick={() => handleEdit(s)}
+                                            className="btn-action btn-edit"
+                                        >
+                                            Edit
+                                        </button>
+                                        <button
+                                            onClick={() => handleDelete(s._id)}
+                                            className="btn-action btn-delete"
+                                        >
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                            {!loading && students.length === 0 && <tr><td colSpan="5" className="text-center">No students found</td></tr>}
+                        </tbody>
+                    </table>
+                </div>
+
+                {/* Mobile Card List */}
+                <div className="mobile-attendance-list">
+                    {loading && <LoadingSpinner message="Loading students..." />}
+                    {!loading && students.map(s => (
+                        <div key={s._id} className="attendance-card">
+                            <div className="attendance-card-inner" style={{ cursor: 'default' }}>
+                                <div className="card-info">
+                                    <span className="card-roll">ROLL {s.rollNo}</span>
+                                    <span className="card-name" title={s.name}>{s.name}</span>
+                                    <span className="text-muted" style={{ fontSize: '0.75rem' }}>{s.department} - Year {s.year}</span>
+                                </div>
+                                <div className="flex gap-2">
                                     <button
                                         onClick={() => handleEdit(s)}
                                         className="btn-action btn-edit"
+                                        style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }}
                                     >
                                         Edit
                                     </button>
                                     <button
                                         onClick={() => handleDelete(s._id)}
                                         className="btn-action btn-delete"
+                                        style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }}
                                     >
                                         Delete
                                     </button>
-                                </td>
-                            </tr>
-                        ))}
-                        {!loading && students.length === 0 && <tr><td colSpan="5" className="text-center">No students found</td></tr>}
-                    </tbody>
-                </table>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                    {!loading && students.length === 0 && <p className="text-center text-muted">No students found</p>}
+                </div>
             </div>
         </div>
     );

@@ -62,29 +62,49 @@ const AttendanceView = () => {
             {loading ? <LoadingSpinner message="Searching records..." /> : (
                 <>
                     {found ? (
-                        <div className="table-container">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Roll No</th>
-                                        <th>Name</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {records.map(r => (
-                                        <tr key={r._id}>
-                                            <td>{r.student?.rollNo || 'N/A'}</td>
-                                            <td>{r.student?.name || 'Unknown'}</td>
-                                            <td>
-                                                <span className={`status-badge ${r.status.toLowerCase()}`}>
-                                                    {r.status}
-                                                </span>
-                                            </td>
+                        <div className="attendance-list-wrapper">
+                            {/* Desktop Table */}
+                            <div className="table-container hide-on-mobile">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Roll No</th>
+                                            <th>Name</th>
+                                            <th>Status</th>
                                         </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        {records.map(r => (
+                                            <tr key={r._id}>
+                                                <td>{r.student?.rollNo || 'N/A'}</td>
+                                                <td>{r.student?.name || 'Unknown'}</td>
+                                                <td>
+                                                    <span className={`status-badge ${r.status.toLowerCase()}`}>
+                                                        {r.status}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            {/* Mobile Card List */}
+                            <div className="mobile-attendance-list">
+                                {records.map(r => (
+                                    <div key={r._id} className="attendance-card">
+                                        <div className="attendance-card-inner" style={{ cursor: 'default' }}>
+                                            <div className="card-info">
+                                                <span className="card-roll">ROLL {r.student?.rollNo || 'N/A'}</span>
+                                                <span className="card-name" title={r.student?.name}>{r.student?.name || 'Unknown'}</span>
+                                            </div>
+                                            <div className={`card-status-indicator ${r.status === 'Present' ? 'indicator-present' : 'indicator-absent'}`} style={{ cursor: 'default' }}>
+                                                {r.status}
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     ) : (
                         <div className="empty-state">

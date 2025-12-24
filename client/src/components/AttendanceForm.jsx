@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import StudentAttendanceItem from './StudentAttendanceItem';
 
 const AttendanceForm = () => {
     const [department, setDepartment] = useState('BCA');
@@ -62,10 +63,10 @@ const AttendanceForm = () => {
         fetchStudents();
     }, [department, year, date]);
 
-    const toggleStatus = (id) => {
+    const toggleStatus = (id, newStatus = null) => {
         setAttendance(prev => ({
             ...prev,
-            [id]: prev[id] === 'Present' ? 'Absent' : 'Present'
+            [id]: newStatus ? newStatus : (prev[id] === 'Present' ? 'Absent' : 'Present')
         }));
     };
 
@@ -137,32 +138,50 @@ const AttendanceForm = () => {
             {loading ? <p>Loading...</p> : (
                 <>
                     {students.length > 0 ? (
-                        <div className="table-container">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Roll No</th>
-                                        <th>Name</th>
-                                        <th className="text-center">Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {students.map(student => (
-                                        <tr key={student._id}>
-                                            <td>{student.rollNo}</td>
-                                            <td>{student.name}</td>
-                                            <td className="text-center">
-                                                <button
-                                                    onClick={() => toggleStatus(student._id)}
-                                                    className={`status-btn ${attendance[student._id] === 'Present' ? 'status-btn-present' : 'status-btn-absent'}`}
-                                                >
-                                                    {attendance[student._id]}
-                                                </button>
-                                            </td>
+                        <div className="attendance-list-wrapper">
+                            {/* Desktop Table */}
+                            <div className="table-container hide-on-mobile">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Roll No</th>
+                                            <th>Name</th>
+                                            <th className="text-center">Status</th>
                                         </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        {students.map(student => (
+                                            <tr key={student._id}>
+                                                <td>{student.rollNo}</td>
+                                                <td>{student.name}</td>
+                                                <td className="text-center">
+                                                    <button
+                                                        onClick={() => toggleStatus(student._id)}
+                                                        className={`status-btn ${attendance[student._id] === 'Present' ? 'status-btn-present' : 'status-btn-absent'}`}
+                                                    >
+                                                        {attendance[student._id]}
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            {/* Mobile Card List */}
+                            <div className="mobile-attendance-list">
+                                <div className="mb-4 text-muted text-center" style={{ fontSize: '0.8rem' }}>
+                                    Tip: Swipe Right for Present, Left for Absent
+                                </div>
+                                {students.map(student => (
+                                    <StudentAttendanceItem
+                                        key={student._id}
+                                        student={student}
+                                        status={attendance[student._id]}
+                                        onToggle={toggleStatus}
+                                    />
+                                ))}
+                            </div>
                         </div>
                     ) : (
                         <p className="empty-state">No students found for this class.</p>
