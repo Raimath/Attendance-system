@@ -22,4 +22,4 @@ app.use('/api/attendance', require('./routes/attendance'));
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server v2.4 (with lastUpdated) running on port ${PORT}`));

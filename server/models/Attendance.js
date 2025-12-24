@@ -28,6 +28,9 @@ const AttendanceSchema = new mongoose.Schema({
     faculty: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
+    },
+    lastUpdated: {
+        type: Date
     }
 });
 

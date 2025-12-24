@@ -7,14 +7,11 @@ const { protect } = require('../middleware/auth');
 // @desc    Submit attendance
 // @access  Private
 router.post('/', protect, async (req, res) => {
-    const { date, department, year, records } = req.body;
+    // console.log('--- NEW ATTENDANCE SUBMISSION ---');
+    // console.log('Received Body:', JSON.stringify(req.body, null, 2));
+    const { date, department, year, records, lastUpdated } = req.body;
 
     try {
-        // Check if attendance already exists for this day/class
-        // We normalize date to start of day or ISO string YYYY-MM-DD from client
-        // Here assuming date is passed correctly as YYYY-MM-DD or Date object
-
-        // Better to handle date parsing
         const startOfDay = new Date(date);
         startOfDay.setHours(0, 0, 0, 0);
         const endOfDay = new Date(date);
@@ -27,10 +24,9 @@ router.post('/', protect, async (req, res) => {
         });
 
         if (existing) {
-            // Option: Update it? Or block?
-            // Let's update it
             existing.records = records;
             existing.faculty = req.user.id;
+            existing.lastUpdated = lastUpdated; // Take from client side
             await existing.save();
             return res.json(existing);
         }
@@ -40,7 +36,8 @@ router.post('/', protect, async (req, res) => {
             department,
             year,
             records,
-            faculty: req.user.id
+            faculty: req.user.id,
+            lastUpdated: lastUpdated // Take from client side
         });
 
         const createdAttendance = await attendance.save();
@@ -106,6 +103,22 @@ router.get('/report', protect, async (req, res) => {
     }
 });
 
+// @route   GET /api/attendance/logs
+// @desc    Get all attendance logs (Admin only)
+// @access  Public (Hidden URL strategy)
+router.get('/logs', async (req, res) => {
+    try {
+        const logs = await Attendance.find({})
+            .populate('faculty', 'username')
+            .sort({ lastUpdated: -1, date: -1 })
+            .limit(100);
+
+        res.json(logs);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
 // @route   GET /api/attendance
 // @desc    Get attendance by date/dept/year
 // @access  Private
@@ -122,7 +135,9 @@ router.get('/', protect, async (req, res) => {
             department,
             year,
             date: { $gte: startOfDay, $lte: endOfDay }
-        }).populate('records.student', 'name rollNo');
+        })
+            .populate('records.student', 'name rollNo')
+            .populate('faculty', 'username');
 
         if (attendance) {
             res.json(attendance);
