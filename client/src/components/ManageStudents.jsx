@@ -9,17 +9,24 @@ const ManageStudents = () => {
     const [editingId, setEditingId] = useState(null);
 
     const fetchStudents = async () => {
+        setLoading(true);
         try {
-            const { data } = await axios.get('/api/students');
+            const { data } = await axios.get('/api/students', {
+                params: {
+                    department: formData.department,
+                    year: formData.year
+                }
+            });
             setStudents(data);
         } catch (error) {
             console.error(error);
         }
+        setLoading(false);
     };
 
     useEffect(() => {
         fetchStudents();
-    }, []);
+    }, [formData.department, formData.year]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();

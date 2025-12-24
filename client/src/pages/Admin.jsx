@@ -10,6 +10,8 @@ const Admin = () => {
     const au = "admin";
     const [editingUser, setEditingUser] = useState(null);
     const [editForm, setEditForm] = useState({ username: '', password: '' });
+    const [attendanceLogs, setAttendanceLogs] = useState([]);
+    const [logsLoading, setLogsLoading] = useState(false);
 
     // Admin Login State
     const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
@@ -29,9 +31,21 @@ const Admin = () => {
         setLoading(false);
     };
 
+    const fetchLogs = async () => {
+        setLogsLoading(true);
+        try {
+            const { data } = await axios.get('/api/attendance/logs');
+            setAttendanceLogs(data);
+        } catch (error) {
+            console.error('Failed to load logs', error);
+        }
+        setLogsLoading(false);
+    };
+
     useEffect(() => {
         if (isAdminLoggedIn) {
             fetchUsers();
+            fetchLogs();
         }
     }, [isAdminLoggedIn]);
 
@@ -218,6 +232,52 @@ const Admin = () => {
 
                 {loading && <LoadingSpinner message="Fetching users..." />}
                 {!loading && users.length === 0 && <p className="empty-state">No faculty accounts found.</p>}
+
+                {/* Attendance Logs Section */}
+                <div className="mt-12">
+                    <div className="section-header">
+                        <div>
+                            <h2 className="nav-title font-bold text-lg">Marking Activity</h2>
+                            <p className="nav-subtitle">Who marked attendance and when</p>
+                        </div>
+                        <button onClick={fetchLogs} className="btn-outline" style={{ padding: '0.4rem 1rem' }}>Refresh Logs</button>
+                    </div>
+
+                    <div className="table-container mt-4">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Attendance Date</th>
+                                    <th>Class</th>
+                                    <th>Faculty Name</th>
+                                    <th>Last Updated</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {attendanceLogs.map(log => (
+                                    <tr key={log._id}>
+                                        <td className="font-600">{new Date(log.date).toLocaleDateString()}</td>
+                                        <td>
+                                            {log.department} - Year {log.year}
+                                        </td>
+                                        <td>
+                                            <span className="badge badge-primary" style={{ background: 'rgba(99, 102, 241, 0.1)', color: 'var(--primary)', padding: '0.3rem 0.6rem' }}>
+                                                {log.faculty?.username || 'N/A'}
+                                            </span>
+                                        </td>
+                                        <td className="text-muted" style={{ fontSize: '0.85rem' }}>
+                                            {log.lastUpdated
+                                                ? new Date(log.lastUpdated).toLocaleString()
+                                                : 'No tracking data'}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                    {logsLoading && <LoadingSpinner message="Updating logs..." />}
+                    {!logsLoading && attendanceLogs.length === 0 && <p className="empty-state">No attendance activity recorded yet.</p>}
+                </div>
             </div>
         </div>
     );

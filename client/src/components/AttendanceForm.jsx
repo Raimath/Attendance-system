@@ -98,7 +98,8 @@ const AttendanceForm = () => {
                 date,
                 department,
                 year,
-                records
+                records,
+                lastUpdated: new Date().toISOString() // Sending current client-side time as ISO string
             });
             setMessage(`Submitted! (${presentCount} Present)`);
             setTimeout(() => setMessage(''), 5000);
