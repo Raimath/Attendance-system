@@ -12,6 +12,12 @@ const Admin = () => {
     const [editForm, setEditForm] = useState({ username: '', password: '' });
     const [attendanceLogs, setAttendanceLogs] = useState([]);
     const [logsLoading, setLogsLoading] = useState(false);
+    const [showLogsTable, setShowLogsTable] = useState(false);
+    const [logFilters, setLogFilters] = useState({
+        department: '',
+        year: '',
+        date: ''
+    });
 
     // Admin Login State
     const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
@@ -240,43 +246,138 @@ const Admin = () => {
                             <h2 className="nav-title font-bold text-lg">Marking Activity</h2>
                             <p className="nav-subtitle">Who marked attendance and when</p>
                         </div>
-                        <button onClick={fetchLogs} className="btn-outline" style={{ padding: '0.4rem 1rem' }}>Refresh Logs</button>
+                        <div className="flex gap-2">
+                            <button onClick={fetchLogs} className="btn-outline" style={{ padding: '0.4rem 1rem' }}>Refresh Data</button>
+                        </div>
                     </div>
 
-                    <div className="table-container mt-4">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Attendance Date</th>
-                                    <th>Class</th>
-                                    <th>Faculty Name</th>
-                                    <th>Last Updated</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {attendanceLogs.map(log => (
-                                    <tr key={log._id}>
-                                        <td className="font-600">{new Date(log.date).toLocaleDateString()}</td>
-                                        <td>
-                                            {log.department} - Year {log.year}
-                                        </td>
-                                        <td>
-                                            <span className="badge badge-primary" style={{ background: 'rgba(99, 102, 241, 0.1)', color: 'var(--primary)', padding: '0.3rem 0.6rem' }}>
-                                                {log.faculty?.username || 'N/A'}
-                                            </span>
-                                        </td>
-                                        <td className="text-muted" style={{ fontSize: '0.85rem' }}>
-                                            {log.lastUpdated
-                                                ? new Date(log.lastUpdated).toLocaleString()
-                                                : 'No tracking data'}
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                    {/* Filter Section */}
+                    <div className="glass-panel mt-6 mb-8 filter-section" style={{ padding: '2rem', background: 'rgba(255, 255, 255, 0.02)', border: '1px solid var(--glass-border)' }}>
+                        <div className="grid-responsive grid-3 gap-6">
+                            <div className="form-group">
+                                <label className="form-label font-600 mb-2 block" style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Specific Date</label>
+                                <input
+                                    type="date"
+                                    className="m-0"
+                                    value={logFilters.date}
+                                    onChange={(e) => setLogFilters({ ...logFilters, date: e.target.value })}
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label className="form-label font-600 mb-2 block" style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Department</label>
+                                <select
+                                    className="m-0"
+                                    value={logFilters.department}
+                                    onChange={(e) => setLogFilters({ ...logFilters, department: e.target.value })}
+                                >
+                                    <option value="">All Departments</option>
+                                    <option value="BCA">BCA</option>
+                                    <option value="Bcom">Bcom</option>
+                                    <option value="Bsc">Bsc</option>
+                                    <option value="BBA">BBA</option>
+                                </select>
+                            </div>
+                            <div className="form-group">
+                                <label className="form-label font-600 mb-2 block" style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Year/Class</label>
+                                <select
+                                    className="m-0"
+                                    value={logFilters.year}
+                                    onChange={(e) => setLogFilters({ ...logFilters, year: e.target.value })}
+                                >
+                                    <option value="">All Years</option>
+                                    <option value="1">Year 1</option>
+                                    <option value="2">Year 2</option>
+                                    <option value="3">Year 3</option>
+                                    <option value="4">Year 4</option>
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <div className="flex flex-wrap items-center gap-4 mt-8 pt-6 border-t" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
+                            <button
+                                className="btn-primary"
+                                style={{ padding: '0.75rem 2.5rem', width: 'auto', minWidth: '160px' }}
+                                onClick={() => setShowLogsTable(true)}
+                            >
+                                Search Records
+                            </button>
+                            <button
+                                className="btn-outline"
+                                style={{ padding: '0.75rem 2.5rem', width: 'auto', minWidth: '140px' }}
+                                onClick={() => {
+                                    setLogFilters({ department: '', year: '', date: '' });
+                                    setShowLogsTable(true);
+                                }}
+                            >
+                                View All
+                            </button>
+
+                            {showLogsTable && (
+                                <button
+                                    className="btn-danger-light"
+                                    style={{ padding: '0.75rem 1.5rem', marginLeft: 'auto', width: 'auto' }}
+                                    onClick={() => setShowLogsTable(false)}
+                                >
+                                    <span className="hide-on-mobile">Collapse Details</span>
+                                    <span className="show-only-mobile">Hide</span>
+                                </button>
+                            )}
+                        </div>
                     </div>
-                    {logsLoading && <LoadingSpinner message="Updating logs..." />}
-                    {!logsLoading && attendanceLogs.length === 0 && <p className="empty-state">No attendance activity recorded yet.</p>}
+
+                    {showLogsTable && (
+                        <div className="table-container mt-4 animate-fade-in">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Attendance Date</th>
+                                        <th>Class</th>
+                                        <th>Faculty Name</th>
+                                        <th>Last Updated</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {attendanceLogs
+                                        .filter(log => {
+                                            const matchesDept = !logFilters.department || log.department === logFilters.department;
+                                            const matchesYear = !logFilters.year || String(log.year) === String(logFilters.year);
+                                            const matchesDate = !logFilters.date || new Date(log.date).toISOString().split('T')[0] === logFilters.date;
+                                            return matchesDept && matchesYear && matchesDate;
+                                        })
+                                        .map(log => (
+                                            <tr key={log._id}>
+                                                <td className="font-600">{new Date(log.date).toLocaleDateString()}</td>
+                                                <td>
+                                                    {log.department} - Year {log.year}
+                                                </td>
+                                                <td>
+                                                    <span className="badge badge-primary" style={{ background: 'rgba(99, 102, 241, 0.1)', color: 'var(--primary)', padding: '0.3rem 0.6rem' }}>
+                                                        {log.faculty?.username || 'N/A'}
+                                                    </span>
+                                                </td>
+                                                <td className="text-muted" style={{ fontSize: '0.85rem' }}>
+                                                    {log.lastUpdated
+                                                        ? new Date(log.lastUpdated).toLocaleString()
+                                                        : 'No tracking data'}
+                                                </td>
+                                            </tr>
+                                        ))}
+                                </tbody>
+                            </table>
+                            {logsLoading && <LoadingSpinner message="Updating logs..." />}
+                            {!logsLoading && attendanceLogs.length === 0 && <p className="empty-state">No attendance activity recorded yet.</p>}
+                            {!logsLoading && attendanceLogs.length > 0 &&
+                                attendanceLogs.filter(log => {
+                                    const matchesDept = !logFilters.department || log.department === logFilters.department;
+                                    const matchesYear = !logFilters.year || String(log.year) === String(logFilters.year);
+                                    const matchesDate = !logFilters.date || new Date(log.date).toISOString().split('T')[0] === logFilters.date;
+                                    return matchesDept && matchesYear && matchesDate;
+                                }).length === 0 && (
+                                    <p className="empty-state">No records found matching your filters.</p>
+                                )}
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

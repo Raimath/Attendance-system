@@ -61,6 +61,55 @@ const AttendanceView = () => {
 
             {loading ? <LoadingSpinner message="Searching records..." /> : (
                 <>
+                    {found && records.length > 0 && (
+                        <div className="stats-grid mb-6 animate-fade-in" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '1rem' }}>
+                            <div className="glass-panel stat-card" style={{ borderLeft: '3px solid var(--accent-color)', padding: '0.75rem 1rem', gap: '0.75rem' }}>
+                                <div className="stat-icon" style={{ width: '36px', height: '36px', borderRadius: '8px', background: 'rgba(99, 102, 241, 0.1)', color: 'var(--accent-color)' }}>
+                                    <span style={{ fontSize: '1rem', fontWeight: 'bold' }}>Σ</span>
+                                </div>
+                                <div>
+                                    <p className="stat-label" style={{ fontSize: '0.75rem', marginBottom: '0' }}>Total</p>
+                                    <h3 className="stat-value" style={{ fontSize: '1.2rem' }}>{records.length}</h3>
+                                </div>
+                            </div>
+
+                            <div className="glass-panel stat-card" style={{ borderLeft: '3px solid var(--success)', padding: '0.75rem 1rem', gap: '0.75rem' }}>
+                                <div className="stat-icon" style={{ width: '36px', height: '36px', borderRadius: '8px', background: 'rgba(16, 185, 129, 0.1)', color: 'var(--success)' }}>
+                                    <span style={{ fontSize: '1rem', fontWeight: 'bold' }}>✓</span>
+                                </div>
+                                <div>
+                                    <p className="stat-label" style={{ fontSize: '0.75rem', marginBottom: '0' }}>Present</p>
+                                    <h3 className="stat-value" style={{ fontSize: '1.2rem', color: 'var(--success)' }}>
+                                        {records.filter(r => r.status === 'Present').length}
+                                    </h3>
+                                </div>
+                            </div>
+
+                            <div className="glass-panel stat-card" style={{ borderLeft: '3px solid var(--danger)', padding: '0.75rem 1rem', gap: '0.75rem' }}>
+                                <div className="stat-icon" style={{ width: '36px', height: '36px', borderRadius: '8px', background: 'rgba(239, 68, 68, 0.1)', color: 'var(--danger)' }}>
+                                    <span style={{ fontSize: '1rem', fontWeight: 'bold' }}>✕</span>
+                                </div>
+                                <div>
+                                    <p className="stat-label" style={{ fontSize: '0.75rem', marginBottom: '0' }}>Absent</p>
+                                    <h3 className="stat-value" style={{ fontSize: '1.2rem', color: 'var(--danger)' }}>
+                                        {records.filter(r => r.status === 'Absent').length}
+                                    </h3>
+                                </div>
+                            </div>
+
+                            <div className="glass-panel stat-card hide-on-mobile" style={{ borderLeft: '3px solid #f59e0b', padding: '0.75rem 1rem', gap: '0.75rem' }}>
+                                <div className="stat-icon" style={{ width: '36px', height: '36px', borderRadius: '8px', background: 'rgba(245, 158, 11, 0.1)', color: '#f59e0b' }}>
+                                    <span style={{ fontSize: '1rem', fontWeight: 'bold' }}>%</span>
+                                </div>
+                                <div>
+                                    <p className="stat-label" style={{ fontSize: '0.75rem', marginBottom: '0' }}>Rate</p>
+                                    <h3 className="stat-value" style={{ fontSize: '1.2rem' }}>
+                                        {((records.filter(r => r.status === 'Present').length / records.length) * 100).toFixed(0)}%
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                     {found ? (
                         <div className="attendance-list-wrapper">
                             {/* Desktop Table */}
