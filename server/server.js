@@ -8,9 +8,13 @@ dotenv.config();
 const app = express();
 
 app.use(express.json());
+
 app.use(cors());
 
-// Database Connection
+// Health Check / Welcome Route
+app.get('/', (req, res) => {
+    res.send('Attendance System API is running...');
+});
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log('MongoDB Connected'))
     .catch(err => console.log(err));
