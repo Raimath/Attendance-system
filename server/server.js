@@ -15,9 +15,25 @@ app.use(cors());
 app.get('/', (req, res) => {
     res.send('Attendance System API is running...');
 });
-mongoose.connect(process.env.MONGO_URI)
-    .then(() => console.log('MongoDB Connected'))
-    .catch(err => console.log(err));
+
+// Database Connection
+let isConnected = false;
+const connectDB = async () => {
+    if (isConnected) return;
+    try {
+        await mongoose.connect(process.env.MONGO_URI);
+        isConnected = true;
+        console.log('MongoDB Connected');
+    } catch (err) {
+        console.log('MongoDB Connection Error:', err);
+    }
+};
+
+// Middleware to ensure DB is connected before handling routes
+app.use(async (req, res, next) => {
+    await connectDB();
+    next();
+});
 
 // Routes
 app.use('/api/auth', require('./routes/auth'));
