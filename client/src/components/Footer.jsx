@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
     const { user } = useContext(AuthContext);
@@ -27,12 +28,15 @@ const Footer = () => {
             </div>
 
             <div className="footer-bottom">
-                <div>
-                    &copy; {new Date().getFullYear()} Rehemat Ali. All rights reserved.
+                <div className="footer-info">
+                    <p>This website is designed and developed by Department of Computer Applications.</p>
+                    <p>Copyright &copy; {new Date().getFullYear()} <Link to="https://github.com/Raimath" target='_blank'>Rehamath Ali </Link>. All rights reserved.</p>
                 </div>
-                <div className="flex gap-4">
-                    <span>v1.2.4</span>
-                    <span className="message-success font-500">Faculty Portal</span>
+                <div className="footer-meta">
+                    <div className="flex gap-4">
+                        <span>v1.2.4</span>
+                        <span className="message-success font-500">Faculty Portal</span>
+                    </div>
                 </div>
             </div>
         </footer>

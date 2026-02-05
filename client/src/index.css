@@ -1241,8 +1241,21 @@ tr:hover td {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: var(--text-muted);
+  /* color: var(--text-muted); */
   font-size: 0.85rem;
+}
+
+.footer-bottom a {
+  color: var(--text-main);
+  text-decoration: none;
+}
+
+.footer-info p {
+  margin: 0.2rem 0;
+}
+
+.footer-info strong {
+  color: var(--text-secondary);
 }
 
 @media (max-width: 768px) {

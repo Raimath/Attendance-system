@@ -4,12 +4,12 @@ import { useNavigate, Link } from 'react-router-dom';
 import ThemeToggle from '../components/ThemeToggle';
 import LoadingSpinner from '../components/LoadingSpinner';
 
-const Login = () => {
+const Signup = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
-    const { login } = useContext(AuthContext);
+    const { register } = useContext(AuthContext);
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -18,7 +18,7 @@ const Login = () => {
         setIsLoading(true);
 
         try {
-            const result = await login(username, password);
+            const result = await register(username, password);
 
             if (result.success) {
                 navigate('/dashboard');
@@ -37,12 +37,12 @@ const Login = () => {
             {isLoading && (
                 <LoadingSpinner
                     fullPage
-                    message="Logging you in..."
+                    message="Creating your account..."
                 />
             )}
             <div className="glass-panel animate-fade-in auth-panel">
                 <h2 className="auth-title">
-                    Faculty Login
+                    Faculty Register
                 </h2>
 
                 {error && (
@@ -79,18 +79,18 @@ const Login = () => {
                         className="btn-primary mt-4"
                         disabled={isLoading}
                     >
-                        Sign In
+                        Sign Up
                     </button>
                 </form>
 
-                {/* <div className="form-footer">
+                <div className="form-footer">
                     <Link
-                        to="/signup"
+                        to="/login"
                         className="link-btn"
                     >
-                        Need an account? Register
+                        Already have an account? Login
                     </Link>
-                </div> */}
+                </div>
             </div>
             <div className="theme-toggle-fixed">
                 <ThemeToggle />
@@ -99,4 +99,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default Signup;
